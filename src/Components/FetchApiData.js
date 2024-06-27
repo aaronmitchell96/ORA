@@ -1,10 +1,11 @@
 import React, { Component, useEffect, useState} from 'react'
+import SelectBox from './SelectBox';
 
 function FetchApiData () {
     const [workout, setWorkouts] = useState(null);
 
     useEffect(() => {
-      fetch('https://exercisedb.p.rapidapi.com/exercises?limit=2000&offset=0', {
+      fetch('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', {
         headers: {
           'x-rapidapi-key': '06bd9b642dmsh8bbdee665e3db29p17cdb1jsnad5036c2e351'
         }
@@ -17,11 +18,14 @@ function FetchApiData () {
           })
     },[])
 
-  return (
-    <div>
-        <h1>HELLO WORLD!</h1>
-      {console.log(workout)}
-    </div>
+    return (
+      <div>
+          {workout ? (
+              <SelectBox workout={workout}/>
+          ) : (
+              <p>Loading...</p>
+          )}
+      </div>
   );
 }
 
