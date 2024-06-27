@@ -1,10 +1,17 @@
+import { useEffect } from "react";
+
 function SelectBox(workout){
+    
+    const handleClick = (exercise) => {
+        console.log("clicked!", exercise);
+    };
+
     return (
         <div>
             {
                     workout.workout.map((exercise, index) => (
                         <div key={index}>
-                            <h3>{exercise}</h3>
+                            <h3 onClick={() => handleClick(exercise)}>{exercise}</h3>
                         </div>
                     ))
             }
