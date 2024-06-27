@@ -4,6 +4,7 @@ function SelectBox(bodyParts){
     const [exercises, setExercises] = useState([]);
     const [selectedBodyPart, setSelectedBodyPart] = useState(null);
     const [selectedExerciseGif, setSelectedExerciseGif] = useState(null);
+    const [instructions, setInstructions] = useState(null);
     
     useEffect(() => {
         if (selectedBodyPart) {
@@ -24,16 +25,19 @@ function SelectBox(bodyParts){
     const handleBodyPartClick = (bodyPart) => {
         setSelectedBodyPart(bodyPart);
         setSelectedExerciseGif(null); // Reset the selected exercise GIF when changing body part
+        setInstructions(null);
     };
 
-    const handleExerciseClick = (exerciseGif) => {
+    const handleExerciseClick = (exerciseGif, exerciseInstructions) => {
         setSelectedExerciseGif((prevGif) => prevGif === exerciseGif ? null : exerciseGif);
+        setInstructions((prevInstructions) => prevInstructions === exerciseInstructions ? null : exerciseInstructions);
     };
 
     const handleBackClick = () => {
         setSelectedBodyPart(null);
         setExercises([]);
         setSelectedExerciseGif(null); // Reset the selected exercise GIF
+        setInstructions(null);
     };
 
     return (
@@ -44,10 +48,18 @@ function SelectBox(bodyParts){
                 <h2>Exercises for {selectedBodyPart}</h2>
                 {exercises.map((exercise, index) => (
                     <div key={index}>
-                        <h3 onClick={() => handleExerciseClick(exercise.gifUrl)}>{exercise.name}</h3>
+                        <h3 onClick={() => handleExerciseClick(exercise.gifUrl, exercise.instructions)}>{exercise.name}</h3>
                         {selectedExerciseGif === exercise.gifUrl && (
-                                <img src={exercise.gifUrl} alt="Exercise GIF" />
-                            )}
+                                <>
+                                    <ul>
+                                        {instructions.map((instruction, i) => (
+                                            <li key={i}>{instruction}</li>
+                                        ))}
+                                    </ul>
+                                    <img src={exercise.gifUrl} alt="Exercise GIF" />
+                                </>
+                            )
+                        }
                     </div>
                 ))}
                 <button onClick={handleBackClick}>Back to Body Parts</button>
