@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState} from 'react'
 import SelectBox from './SelectBox';
 
 function FetchApiData () {
-    const [workout, setWorkouts] = useState(null);
+    const [bodyParts, setBodyParts] = useState([]);
 
     useEffect(() => {
       fetch('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', {
@@ -14,14 +14,15 @@ function FetchApiData () {
           return res.json();
         })
           .then((data)=>{
-            setWorkouts(data)
+            setBodyParts(data)
           })
     },[])
+    
 
     return (
       <div>
-          {workout ? (
-              <SelectBox workout={workout}/>
+          {bodyParts ? (
+              <SelectBox bodyParts={bodyParts}/>
           ) : (
               <p>Loading...</p>
           )}
