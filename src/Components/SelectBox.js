@@ -3,6 +3,7 @@ import React, { Component, useEffect, useState} from 'react'
 function SelectBox(bodyParts){
     const [exercises, setExercises] = useState([]);
     const [selectedBodyPart, setSelectedBodyPart] = useState(null);
+    const [selectedExerciseGif, setSelectedExerciseGif] = useState(null);
     
     useEffect(() => {
         if (selectedBodyPart) {
@@ -22,23 +23,31 @@ function SelectBox(bodyParts){
 
     const handleBodyPartClick = (bodyPart) => {
         setSelectedBodyPart(bodyPart);
-        console.log(exercises)
+        setSelectedExerciseGif(null); // Reset the selected exercise GIF when changing body part
+    };
+
+    const handleExerciseClick = (exerciseGif) => {
+        setSelectedExerciseGif((prevGif) => prevGif === exerciseGif ? null : exerciseGif);
     };
 
     const handleBackClick = () => {
         setSelectedBodyPart(null);
         setExercises([]);
+        setSelectedExerciseGif(null); // Reset the selected exercise GIF
     };
 
     return (
         <div>
         {selectedBodyPart ? (
             <div>
+                {console.log(exercises)}
                 <h2>Exercises for {selectedBodyPart}</h2>
                 {exercises.map((exercise, index) => (
                     <div key={index}>
-                        <h3>{exercise.name}</h3>
-                        <p>{exercise.description}</p>
+                        <h3 onClick={() => handleExerciseClick(exercise.gifUrl)}>{exercise.name}</h3>
+                        {selectedExerciseGif === exercise.gifUrl && (
+                                <img src={exercise.gifUrl} alt="Exercise GIF" />
+                            )}
                     </div>
                 ))}
                 <button onClick={handleBackClick}>Back to Body Parts</button>
